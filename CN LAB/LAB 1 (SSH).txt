@@ -1,0 +1,25 @@
+SSh Configuration:
+
+Step 1: 
+First assign IP to PC (192.168.10.10) and default Gateway to Router (192.168.10.1) ( Both the IP should be from the same Network)
+
+Step 2: Now configure hostname and password in router
+Router(config mode): hostname CNRouter
+                     enable password cisco
+		     ip domain-name cisco.com
+		     username Admin password cisco
+
+Step 3: Generate crypto keys using RSA
+Router(config mode):crypto key generate rsa
+it will ask how many bits in the modulus: press 1024
+
+Step 4: Config line vty and enable ssh
+Router(config mode):line vty 0 15
+		Router(config-line):login local
+				transport input ssh
+				exit
+		   ip ssh version 2
+
+Step 5: Test ssh connection from pc
+ssh -l Admin 192.168.10.1
+provide password: cisco

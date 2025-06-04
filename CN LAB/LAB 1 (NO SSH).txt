@@ -1,0 +1,20 @@
+Telnet Configuration:
+
+Step 1: 
+First assign IP to PC (192.168.10.10) and default Gateway to Router (192.168.10.1) ( Both the IP should be from the same Network)
+
+Step 2: Now configure hostname and password in router
+Router(config mode): hostname CNRouter
+                     enable password cisco
+		     ip domain-name cisco.com
+		     username Admin password cisco
+
+Step 3: Config line vty and enable ssh
+Router(config mode):line vty 0 15
+		Router(config-line):login local
+				transport input telnet
+				exit
+
+Step 4: Test telnet connection from pc
+telnet 192.168.10.1
+provide username: Admin password: cisco

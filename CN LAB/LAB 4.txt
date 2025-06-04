@@ -1,0 +1,143 @@
+PLAYFAIR CIPHER---------------------------------------------------------------------------
+
+def create_key_matrix(key):                 
+    key = key.upper().replace("J", "I")     
+    matrix = []                            
+    for ch in key:                          
+        if ch.isalpha() and ch not in matrix:
+            matrix.append(ch)
+    for ch in "ABCDEFGHIKLMNOPQRSTUVWXYZ":  
+        if ch not in matrix:
+            matrix.append(ch)
+    
+    keymatrix = []
+    for i in range(0,25,5):
+      keymatrix.append(matrix[i:i+5])
+    return keymatrix
+
+def find_char_position(matrix, ch):   
+    for i in range(len(matrix)):
+      for j in range(len(matrix[i])):
+        if (matrix[i][j] == ch):
+            return i,j
+    return None
+
+def prepare_plaintext(plaintext):     
+    plaintext = plaintext.upper().replace("J", "I")   
+    plaintext = "".join(filter(str.isalpha, plaintext))  
+
+    if 'X' not in plaintext :
+      padding = 'X'
+    else:
+      ch = 'A'
+      while (ch <= 'Z'):
+        if ch not in plaintext :
+          break
+        ch+=1
+      padding = ch
+
+    pairs = []          
+    i = 0
+    while i < len(plaintext):         
+        pair = plaintext[i:i + 2]     
+        if len(pair) == 2 and pair[0] == pair[1]:   
+          pairs.append(pair[0] + padding) 
+          i+=1                        
+        else:                         
+          pairs.append(pair)          
+          i += 2                      
+    if len(pairs[len(pairs)-1]) % 2 != 0: 
+        pairs[len(pairs)-1] += padding
+    return pairs, padding
+
+def encryption(plaintext, key):       
+    keymatrix = create_key_matrix(key)      
+    pairs, pad = prepare_plaintext(plaintext)    
+    ciphertext = ""                         
+
+    for pair in pairs:
+        row1, col1 = find_char_position(keymatrix, pair[0])   
+        row2, col2 = find_char_position(keymatrix, pair[1])   
+
+        if row1 == row2:                   
+            ciphertext += keymatrix[row1][(col1 + 1) % 5]     
+            ciphertext += keymatrix[row2][(col2 + 1) % 5]     
+        elif col1 == col2:                 
+            ciphertext += keymatrix[(row1 + 1) % 5][col1]     
+            ciphertext += keymatrix[(row2 + 1) % 5][col2]     
+        else:                               
+            ciphertext += keymatrix[row1][col2]               
+            ciphertext += keymatrix[row2][col1]               
+
+    return ciphertext, pad
+
+def decryption(ciphertext, key, pad):        
+    keymatrix = create_key_matrix(key)      
+    pairs = []
+    for i in range(0, len(ciphertext), 2):  
+      pairs.append(ciphertext[i:i + 2])
+
+    plaintext = ""
+
+    for pair in pairs:
+        row1, col1 = find_char_position(keymatrix, pair[0])   
+        row2, col2 = find_char_position(keymatrix, pair[1])   
+
+        if row1 == row2:                    
+            plaintext += keymatrix[row1][(col1 - 1) % 5]      
+            plaintext += keymatrix[row2][(col2 - 1) % 5]      
+        elif col1 == col2:                  
+            plaintext += keymatrix[(row1 - 1) % 5][col1]      
+            plaintext += keymatrix[(row2 - 1) % 5][col2]      
+        else:                              
+            plaintext += keymatrix[row1][col2]                
+            plaintext += keymatrix[row2][col1]                
+    plaintext = plaintext.replace(pad,'')
+    return plaintext
+
+key = input("Enter keyword: ")
+plaintext = input("Enter plaintext: ")
+print(create_key_matrix(key))
+print('Paired plaintext is',prepare_plaintext(plaintext))
+ciphertext, pad = encryption(plaintext, key)
+print("Ciphertext:", ciphertext)
+decrypted_plaintext = decryption(ciphertext, key, pad)
+print("Decrypted plaintext:", decrypted_plaintext)
+
+
+
+VIGENERE CIPHER------------------------------------------------------------------------------------
+
+def encrypt(P,k):
+  C=""                                                      
+  j=0                                                       
+  for i in P:                                               
+    shift = ord(k[j % len(k)]) - ord('a')                  
+    C += chr((ord(i) - ord('a') + shift) % 26 + ord('A'))    
+    j+=1                                                    
+  return C
+
+def decrypt(C,k):
+  P=""                                                          
+  j=0                                                          
+  for i in C:                                                   
+    shift = ord(k[j % len(k)]) - ord('a')                       
+    P += chr((ord(i) - ord('A') - shift + 26) % 26 + ord('a')) 
+    j+=1                                                        
+  return P                                                      
+
+P = input("Input plaintext:")
+
+k = input("Input key:")
+
+P = "".join(P.lower().split())                              
+print("Plaintext is: ",P)
+k = "".join(k.lower().split())                              
+print("Key is: ",k)
+
+C = encrypt(P,k)                                           
+print("e_Ciphertext is: ",C)
+
+P1 = decrypt(C,k)                                           
+print("d_Plaintext is: ",P1)                                                  
+  

@@ -1,0 +1,38 @@
+Step1:
+Assign IP to Router (10.10.10.1), Add a switch, then Server (10.10.10.5) and finally PC(2 of them) (10.10.10.2) (10.10.10.3)
+
+Step2:
+Open router CLI in config mode: 
+
+aaa new-model
+aaa authentication login default group tacacs+ local
+tacacs-server host 10.10.10.5
+tacacs-server key server123
+hostname CNSRouter
+enable password cisco
+ip domain-name cisco.com
+crypto key generate RSA
+
+press: 1024
+
+line vty 0 4
+login authentication default
+transport input ssh
+exit
+ip ssh version 2
+username cncs password Lab1
+
+Step3:
+Open Services in Server and go AAA, turn it on, in network configuration:
+Client Name: CNSRouter, Client IP: 10.10.10.1, Secret: server123, ServerType: Tacacs 
+and press Add
+
+Username: cns1, Password: cns1 and press Add(For 1 pc, add more for other pc as you need)
+
+Step4:
+In one PC open command prompt and
+ssh -l cns1 10.10.10.1
+password give like cns1 and cns1
+
+
+*if doesn't work add default gateway to 2 pc and server as 10.10.10.1

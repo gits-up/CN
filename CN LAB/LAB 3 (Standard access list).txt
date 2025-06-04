@@ -1,0 +1,29 @@
+Step1:
+Assign IP (go config then static) to Router0 (Network: 210.100.10.0, Mask: 255.255.255.0, Next Hop: 10.10.10.2, then press add),(copper cross-over wire) Router1 (Network: 200.100.10.0, Mask: 255.255.255.0, Next Hop: 10.10.10.1, then press add), Add two switches, then Server (210.100.10.2) in one side and finally PC(4 of them) (200.100.10.2) (200.100.10.3) (200.100.10.4) (200.100.10.5)
+
+Now we need to add default gateway:
+Router 0 (in router to router connection): GigabitEthernet0/0/1: ipv4=10.10.10.1
+Router 0 (in router to switch connection): GigEth0/0/0: ipv4=200.100.10.1
+
+Router 1 (in router to router connection): GigabitEthernet0/0/0: ipv4=10.10.10.2
+Router 1 (in router to switch connection): GigEth0/0/1: ipv4=210.100.10.1
+
+Default gateway in all PCs = 200.100.10.1
+Default gateway in server = 210.100.10.1
+
+Remember Router 0 gets the PCs and Router 1 the server
+
+Step2:
+Open Router 1 cli (server one) :
+go to config: 
+ip route 200.100.10.0 255.255.255.0 10.10.10.1
+access-list 5 deny host 200.100.10.2
+access-list 5 permit any
+do show access-list
+interface gig0/0/0
+ip access-group 5 in
+
+Step3:
+in Pc0 check: ping 210.100.10.2
+turn on web browser in pc0 and check http://210.100.10.2
+also check in other pcs
