@@ -1,0 +1,117 @@
+PROMPT -- a) Display the structure of all tables
+DESC instructor;
+DESC course;
+DESC prereq;
+DESC department;
+DESC teaches;
+
+PROMPT -- b) Display the contents of all tables
+SELECT * FROM instructor;
+SELECT * FROM course;
+SELECT * FROM prereq;
+SELECT * FROM department;
+SELECT * FROM teaches;
+
+PROMPT -- c) Display the name and department of each instructor
+SELECT name, dept_name FROM instructor;
+
+PROMPT -- d) Display the name and salary of Comp. Sci. instructors
+SELECT name, salary FROM instructor WHERE dept_name = 'Comp. Sci.';
+
+PROMPT -- e) Display the records of instructors who belong to the Physics department and get a salary less than 90000
+SELECT * FROM instructor WHERE dept_name = 'Physics' AND salary < 90000;
+
+PROMPT -- f) Display the name of instructors who do not belong to Comp. Sci. Department
+SELECT name FROM instructor WHERE dept_name != 'Comp. Sci.';
+
+PROMPT -- g) Display distinct department names available in the Instructor table
+SELECT DISTINCT dept_name FROM instructor;
+
+PROMPT -- h) Display all Course_id's taught in Spring semester of 2009
+SELECT DISTINCT course_id FROM teaches WHERE semester = 'Spring' AND year = 2009;
+
+PROMPT -- i) Display course titles taught in Comp. Sci. Department and do not have credits equal to 3
+SELECT title FROM course WHERE dept_name = 'Comp. Sci.' AND credits != 3;
+
+PROMPT -- j) Display all columns of course table sorted in descending order of department names
+SELECT * FROM course ORDER BY dept_name DESC;
+
+PROMPT -- k) Add a date_of_join column to the instructor table
+ALTER TABLE instructor ADD date_of_join DATE;
+DESC instructor;
+COLUMN name FORMAT A15
+COLUMN dept_name FORMAT A15
+COLUMN date_of_join FORMAT A12
+SELECT * FROM instructor;
+
+PROMPT -- l) Insert date values to existing rows (assuming arbitrary dates for example)
+UPDATE instructor SET date_of_join = TO_DATE('2005-08-15', 'YYYY-MM-DD') WHERE id = 10101;
+UPDATE instructor SET date_of_join = TO_DATE('2008-07-20', 'YYYY-MM-DD') WHERE id = 12121;
+UPDATE instructor SET date_of_join = TO_DATE('2006-09-01', 'YYYY-MM-DD') WHERE id = 15151;
+UPDATE instructor SET date_of_join = TO_DATE('2004-01-12', 'YYYY-MM-DD') WHERE id = 22222;
+UPDATE instructor SET date_of_join = TO_DATE('2007-03-25', 'YYYY-MM-DD') WHERE id = 32343;
+UPDATE instructor SET date_of_join = TO_DATE('2009-11-10', 'YYYY-MM-DD') WHERE id = 33456;
+UPDATE instructor SET date_of_join = TO_DATE('2010-05-30', 'YYYY-MM-DD') WHERE id = 45565;
+UPDATE instructor SET date_of_join = TO_DATE('2011-06-18', 'YYYY-MM-DD') WHERE id = 58583;
+UPDATE instructor SET date_of_join = TO_DATE('2012-02-14', 'YYYY-MM-DD') WHERE id = 76543;
+UPDATE instructor SET date_of_join = TO_DATE('2003-12-05', 'YYYY-MM-DD') WHERE id = 76766;
+UPDATE instructor SET date_of_join = TO_DATE('2014-09-07', 'YYYY-MM-DD') WHERE id = 83821;
+UPDATE instructor SET date_of_join = TO_DATE('2015-10-22', 'YYYY-MM-DD') WHERE id = 98345;
+COLUMN name FORMAT A15
+COLUMN dept_name FORMAT A15
+COLUMN date_of_join FORMAT A12
+SELECT * FROM instructor;
+
+PROMPT -- m) Change the name of dept_name to department in all tables
+ALTER TABLE instructor RENAME COLUMN dept_name TO department;
+DESC instructor;
+COLUMN name FORMAT A15
+COLUMN dept_name FORMAT A15
+COLUMN date_of_join FORMAT A12
+SELECT * FROM instructor;
+
+ALTER TABLE course RENAME COLUMN dept_name TO department;
+DESC course;
+SELECT * FROM course;
+
+ALTER TABLE department RENAME COLUMN dept_name TO department;
+DESC department;
+SELECT * FROM department;
+
+PROMPT -- n) Rename the "Prereq" table to "Prerequired"
+ALTER TABLE prereq RENAME TO prerequired;
+DESC prerequired;
+SELECT * FROM prerequired;
+
+PROMPT -- o) Change Course_id column name to Sub_code
+ALTER TABLE course RENAME COLUMN course_id TO sub_code;
+DESC course;
+SELECT * FROM course;
+
+PROMPT -- p) Change the data type of name to varchar(50)
+ALTER TABLE instructor MODIFY name VARCHAR2(50);
+DESC instructor;
+
+PROMPT -- q) Rename the Instructor table to Faculty_Info
+ALTER TABLE instructor RENAME TO faculty_info;
+DESC faculty_info;
+COLUMN name FORMAT A15
+COLUMN department FORMAT A15
+COLUMN date_of_join FORMAT A12
+SELECT * FROM faculty_info;
+
+PROMPT -- r) Change the column size of Course_id in Course table from 10 to 8
+ALTER TABLE course MODIFY sub_code VARCHAR2(8);
+DESC course;
+
+PROMPT -- s) Delete the content of the table Prereq along with its description
+DELETE FROM prerequired;
+SELECT * FROM prerequired;
+DROP TABLE prerequired;
+
+PROMPT -- t) Change the column name 'Building' of Department table to 'Builder'
+ALTER TABLE department RENAME COLUMN building TO builder;
+DESC department;
+SELECT * FROM department;
+
+

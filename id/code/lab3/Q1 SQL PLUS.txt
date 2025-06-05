@@ -1,0 +1,79 @@
+PROMPT -- a) Display specific department courses
+SELECT sub_code, title, credits
+FROM course
+WHERE department IN ('Physics', 'Music', 'Finance', 'Biology');
+
+PROMPT -- b) Instructors with name starting 'K' and salary > 65000
+SELECT *
+FROM faculty_info
+WHERE name LIKE 'K%' AND salary > 65000;
+
+PROMPT -- c) Gross and net salary computation
+SELECT name, department,
+       salary + (salary * 0.05) + (salary * 0.20) AS gross_salary,
+       (salary + (salary * 0.05) + (salary * 0.20)) - (salary * 0.30) AS net_salary
+FROM faculty_info;
+
+PROMPT -- d) Salary range 60000 to 80000
+SELECT *
+FROM faculty_info
+WHERE salary BETWEEN 60000 AND 80000;
+
+PROMPT -- e) Second letter in name is 'r'
+SELECT *
+FROM faculty_info
+WHERE name LIKE '_r%';
+
+PROMPT -- f) Comp. Sci. instructors by salary descending
+SELECT name
+FROM faculty_info
+WHERE department = 'Comp. Sci.'
+ORDER BY salary DESC;
+
+PROMPT -- g) 15% salary hike
+UPDATE faculty_info
+SET salary = salary * 1.15;
+
+PROMPT -- Show updated table
+DESC faculty_info;
+SELECT * FROM faculty_info;
+
+PROMPT -- h) 3% hike for Comp. Sci. instructors with salary < 70000
+UPDATE faculty_info
+SET salary = salary * 1.03
+WHERE department = 'Comp. Sci.' AND salary < 70000;
+
+PROMPT -- Show updated table
+DESC faculty_info;
+SELECT * FROM faculty_info;
+
+PROMPT -- i) Annual salary display
+SELECT name, salary * 12 AS annual_salary
+FROM faculty_info;
+
+PROMPT -- j) Update title from Game Design to Game Theory
+UPDATE course
+SET title = 'Game Theory'
+WHERE title = 'Game Design';
+
+PROMPT -- Show updated table
+DESC course;
+SELECT * FROM course;
+
+PROMPT -- k) Delete History instructors
+DELETE FROM faculty_info
+WHERE department = 'History';
+
+PROMPT -- Show updated table
+DESC faculty_info;
+SELECT * FROM faculty_info;
+
+PROMPT -- l) Delete BIO courses
+DELETE FROM course
+WHERE sub_code LIKE 'BIO%';
+
+PROMPT -- Show updated table
+DESC course;
+SELECT * FROM course;
+
+

@@ -1,0 +1,92 @@
+PROMPT -- a) Avg. salary of instructors of Physics department
+SELECT AVG(salary) AS avg_salary
+FROM faculty_info
+WHERE department = 'Physics';
+
+PROMPT -- b) department and average salary paid to instructors of each department
+SELECT department, AVG(salary) AS avg_salary
+FROM faculty_info
+GROUP BY department;
+
+PROMPT -- c) ID, Name & Department of the instructor drawing the highest salary
+COLUMN id FORMAT 99999
+COLUMN name FORMAT A15
+COLUMN department FORMAT A12
+COLUMN salary FORMAT 999999
+COLUMN date_of_join FORMAT A10
+SELECT id, name, department FROM faculty_info WHERE salary = (SELECT MAX(salary) FROM faculty_info);
+
+PROMPT -- d) Number of instructors in Comp. Sci. department
+SELECT COUNT(*) AS num_instructors
+FROM faculty_info
+WHERE department = 'Comp. Sci.';
+
+PROMPT -- e) Total credits of all courses in Comp.Sci. department
+SELECT SUM(credits) AS total_credits
+FROM course
+WHERE department = 'Comp. Sci.';
+
+PROMPT -- f) Number of instructors and total salary drawn by Physics and Comp.Sci. departments
+SELECT department, COUNT(*) AS num_instructors, SUM(salary) AS total_salary
+FROM faculty_info
+WHERE department IN ('Physics', 'Comp. Sci.')
+GROUP BY department;
+
+PROMPT -- g) Total credits of Comp.Sci. and Biology departments from course table
+SELECT department, SUM(credits) AS total_credits
+FROM course
+WHERE department IN ('Comp. Sci.', 'Biology')
+GROUP BY department;
+
+PROMPT -- h) Building wise total budget values
+SELECT builder, SUM(budget) AS total_budget
+FROM department
+GROUP BY builder;
+
+PROMPT -- i) Number of instructors in each department
+SELECT department, COUNT(*) AS num_instructors
+FROM faculty_info
+GROUP BY department;
+
+PROMPT -- j) Number of instructors in each department sorted high to low
+SELECT department, COUNT(*) AS num_instructors
+FROM faculty_info
+GROUP BY department
+ORDER BY num_instructors DESC;
+
+PROMPT -- k) Number of courses offered semester-wise
+SELECT semester, COUNT(DISTINCT course_id) AS num_courses
+FROM teaches
+GROUP BY semester;
+
+PROMPT -- l) Departments with less than 2 instructors
+SELECT department
+FROM faculty_info
+GROUP BY department
+HAVING COUNT(*) < 2;
+
+PROMPT -- m) Departments with 2 or more instructors (except Finance), sorted descending
+SELECT department, COUNT(*) AS num_instructors
+FROM faculty_info
+WHERE department != 'Finance'
+GROUP BY department
+HAVING COUNT(*) >= 2
+ORDER BY num_instructors DESC;
+
+PROMPT -- n) Departments with total salary > 50000
+SELECT department
+FROM faculty_info
+GROUP BY department
+HAVING SUM(salary) > 50000;
+
+PROMPT -- o) Total budget for buildings built by Watson
+SELECT SUM(budget) AS total_budget
+FROM department
+WHERE builder = 'Watson';
+
+PROMPT -- p) Highest salary in Comp.Sci. department
+SELECT MAX(salary) AS highest_salary
+FROM faculty_info
+WHERE department = 'Comp. Sci.';
+
+

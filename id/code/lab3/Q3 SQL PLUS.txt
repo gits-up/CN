@@ -1,0 +1,49 @@
+PROMPT -- a) Display your name with first letter capital (assume name is in lower case)
+SELECT INITCAP('debi prasad nanda') AS capitalized_name FROM dual;
+
+PROMPT -- b) Display 2nd to 6th characters of your name
+SELECT SUBSTR('debi prasad nanda', 2, 5) AS substring_name FROM dual;
+
+PROMPT -- c) Find length of your full university name
+SELECT LENGTH('Siksha O Anusandhan University') AS name_length FROM dual;
+
+PROMPT -- d) Instructor names with first letter upper case
+SELECT INITCAP(name) AS formatted_name FROM faculty_info;
+
+PROMPT -- e) Department name of each instructor as a 3-letter code
+SELECT department, SUBSTR(department, 1, 3) AS dept_code FROM faculty_info;
+
+PROMPT -- f) Month of joining of each instructor
+SELECT name, TO_CHAR(date_of_join, 'Month') AS join_month FROM faculty_info;
+
+PROMPT -- g) Date of joining in dd/mm/yy format
+SELECT name, TO_CHAR(date_of_join, 'DD/MM/YY') AS formatted_join_date FROM faculty_info;
+
+PROMPT -- h) Experience of each instructor in months
+SELECT name, ROUND(MONTHS_BETWEEN(SYSDATE, date_of_join)) AS exp_months FROM faculty_info;
+
+PROMPT -- i) Experience in years and months
+SELECT name,
+       FLOOR(MONTHS_BETWEEN(SYSDATE, date_of_join)/12) AS years,
+       MOD(ROUND(MONTHS_BETWEEN(SYSDATE, date_of_join)), 12) AS months
+FROM faculty_info;
+
+PROMPT -- j) Day of joining of each instructor
+SELECT name, TO_CHAR(date_of_join, 'Day') AS join_day FROM faculty_info;
+
+PROMPT -- k) Date 15 days after today
+SELECT SYSDATE + 15 AS future_date FROM dual;
+
+PROMPT -- l) Value 94204.27348 truncated to 2 decimal places
+SELECT TRUNC(94204.27348, 2) AS truncated_value FROM dual;
+
+PROMPT -- m) Value of the expression 5 + 89
+SELECT 5 + 89 AS sum_result FROM dual;
+
+PROMPT -- n) Square root of 6464312
+SELECT SQRT(6464312) AS square_root FROM dual;
+
+PROMPT -- o) Display "HELLO ITER" in lowercase with column heading "lower case"
+SELECT LOWER('HELLO ITER') AS "lower case" FROM dual;
+
+
